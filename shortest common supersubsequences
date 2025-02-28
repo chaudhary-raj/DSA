@@ -1,0 +1,48 @@
+class Solution {
+public:
+    string shortestCommonSupersequence(string str1, string str2) {
+        int n=str1.size();
+        int n1=str2.size();
+        vector<vector<string>> v(n+1,vector<string>(n1+1,""));
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=n1;j++){
+                if(str1[i-1]==str2[j-1]){
+                    v[i][j]=v[i-1][j-1]+str1[i-1];
+                }
+                else{
+                    v[i][j]=v[i][j-1].size()>v[i-1][j].size()?v[i][j-1]:v[i-1][j];
+                }
+            }
+        }
+
+        string str = "";
+        int j=0,k=0;
+        for(int i=0;i<v[n][n1].size();i++){
+            char ch=v[n][n1][i];
+            while(j<n&&ch!=str1[j]){
+                str+=str1[j];
+                j++;
+            }
+            while(k<n1&&ch!=str2[k]){
+                str+=str2[k];
+                k++;
+            }
+            str+=ch;
+            j++;
+            k++;
+        }
+        while(j<n){
+            str+=str1[j];
+            j++;
+        }
+        while(k<n1){
+            str+=str2[k];
+            k++;
+        }
+        return str;
+
+    }
+};
+
+T.C: O(n*n1)
+S.C: O(n*n*n)
